@@ -10,3 +10,4 @@
 <!-- LOVABLE:END -->
 
 - Keep the furniture storefront as a frontend-only demonstrator unless persistence is explicitly requested, because its catalog and reviews are illustrative.
+- Keep illustrative product data centralized in a shared catalog module so listing and detail routes stay consistent.
