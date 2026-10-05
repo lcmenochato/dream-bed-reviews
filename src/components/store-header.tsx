@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, MapPin, Search, ShoppingCart } from "lucide-react";
+import { ChevronDown, Handshake, MapPin, Search, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function StoreHeader({ query, onQueryChange }: { query?: string; onQueryChange?: (value: string) => void }) {
@@ -7,8 +7,9 @@ export function StoreHeader({ query, onQueryChange }: { query?: string; onQueryC
     <header className="sticky top-0 z-30 bg-primary shadow-header">
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex items-center gap-3">
-          <Link to="/" className="hidden items-center gap-1 text-xl font-bold text-primary-foreground sm:flex" aria-label="Mercado Móvel — início">
-            mercado <span className="rounded-sm bg-primary-foreground px-1 text-primary">móvel</span>
+          <Link to="/" className="flex shrink-0 items-center gap-2 text-primary-foreground" aria-label="Mercado Livre — início">
+            <span className="grid h-8 w-12 place-items-center rounded-[50%] border-2 border-primary-foreground" aria-hidden="true"><Handshake className="size-6" strokeWidth={1.8} /></span>
+            <span className="hidden text-lg font-semibold leading-none lg:block">mercado<br />livre</span>
           </Link>
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 size-5 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
