@@ -8,9 +8,9 @@ import { products } from "@/lib/catalog";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mercado Móvel | Colchões, camas e armários baratos" },
+       { title: "Mercado Livre | Colchões, camas e armários baratos" },
       { name: "description", content: "Ofertas em colchões, camas box e guarda-roupas com preços baixos, frete grátis e avaliações de compradores." },
-      { property: "og:title", content: "Mercado Móvel | Móveis com preço baixo" },
+       { property: "og:title", content: "Mercado Livre | Móveis com preço baixo" },
       { property: "og:description", content: "Encontre móveis para o quarto com ofertas, parcelamento e frete grátis." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

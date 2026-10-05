@@ -13,7 +13,7 @@ export const Route = createFileRoute("/produto/$slug")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: loaderData ? `${loaderData.name} | Mercado Móvel` : "Produto não encontrado | Mercado Móvel" },
+      { title: loaderData ? `${loaderData.name} | Mercado Livre` : "Produto não encontrado | Mercado Livre" },
       { name: "description", content: loaderData?.description ?? "Produto não encontrado." },
       { property: "og:title", content: loaderData?.name ?? "Produto não encontrado" },
       { property: "og:description", content: loaderData?.description ?? "Confira as ofertas do Mercado Móvel." },
