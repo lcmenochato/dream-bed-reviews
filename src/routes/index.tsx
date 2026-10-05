@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Heart, Search, Star, Truck } from "lucide-react";
+import { Heart, Search, Star, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StoreHeader } from "@/components/store-header";
 import { products } from "@/lib/catalog";
@@ -8,9 +8,9 @@ import { products } from "@/lib/catalog";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Mercado Móvel | Colchões, camas e armários baratos" },
+       { title: "Mercado Livre | Colchões, camas e armários baratos" },
       { name: "description", content: "Ofertas em colchões, camas box e guarda-roupas com preços baixos, frete grátis e avaliações de compradores." },
-      { property: "og:title", content: "Mercado Móvel | Móveis com preço baixo" },
+       { property: "og:title", content: "Mercado Livre | Móveis com preço baixo" },
       { property: "og:description", content: "Encontre móveis para o quarto com ofertas, parcelamento e frete grátis." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -68,7 +68,7 @@ function Index() {
                       <p className="mt-3 text-xs text-muted-foreground line-through sm:text-sm">{product.oldPrice}</p>
                       <p className="text-xl text-foreground sm:text-2xl">{product.price} <span className="text-xs font-semibold text-success sm:text-sm">{product.discount}</span></p>
                       <p className="mt-1 text-xs text-foreground sm:text-sm">{product.installments}</p>
-                      <p className="mt-3 flex items-center gap-1 text-xs font-semibold text-success sm:text-sm"><Truck className="size-4" /> Frete grátis</p>
+                       <p className="mt-3 flex items-center gap-1 text-xs font-semibold uppercase text-success sm:text-sm">Frete grátis <span className="inline-flex items-center font-extrabold"><Zap className="size-3.5 fill-success" /> Full</span></p>
                     </div>
                   </Link>
                   <Button variant="icon" size="icon" onClick={() => setFavorites((items) => favorite ? items.filter((item) => item !== product.slug) : [...items, product.slug])} className="absolute right-2 top-2 bg-card shadow-control hover:bg-card" aria-label={favorite ? "Remover dos favoritos" : "Adicionar aos favoritos"}><Heart className={favorite ? "fill-action text-action" : "text-action"} /></Button>

@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useState } from "react";
-import { ArrowLeft, Check, ChevronRight, Heart, MapPin, ShieldCheck, Star, Truck } from "lucide-react";
+import { ArrowLeft, Check, ChevronRight, Heart, MapPin, ShieldCheck, Star, Truck, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { StoreHeader } from "@/components/store-header";
 import { getProduct } from "@/lib/catalog";
@@ -13,10 +13,10 @@ export const Route = createFileRoute("/produto/$slug")({
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: loaderData ? `${loaderData.name} | Mercado Móvel` : "Produto não encontrado | Mercado Móvel" },
+      { title: loaderData ? `${loaderData.name} | Mercado Livre` : "Produto não encontrado | Mercado Livre" },
       { name: "description", content: loaderData?.description ?? "Produto não encontrado." },
       { property: "og:title", content: loaderData?.name ?? "Produto não encontrado" },
-      { property: "og:description", content: loaderData?.description ?? "Confira as ofertas do Mercado Móvel." },
+      { property: "og:description", content: loaderData?.description ?? "Confira as ofertas do Mercado Livre." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -56,7 +56,7 @@ function ProductDetail() {
             <p className="text-3xl font-normal">{product.price} <span className="align-middle text-sm font-semibold text-success">{product.discount}</span></p>
             <p className="mt-1 text-sm">{product.installments}</p>
             <p className="mt-2 text-sm font-medium text-success">10% OFF no Pix</p>
-            <div className="mt-7 flex items-start gap-3"><Truck className="mt-0.5 size-5 text-success" /><div><p className="font-semibold text-success">Frete grátis</p><p className="text-sm text-muted-foreground">Chegará entre terça e quinta-feira</p></div></div>
+             <div className="mt-7 flex items-start gap-3"><Truck className="mt-0.5 size-5 text-success" /><div><p className="flex items-center gap-1 font-semibold uppercase text-success">Frete grátis <span className="inline-flex items-center font-extrabold"><Zap className="size-4 fill-success" /> Full</span></p><p className="text-sm text-muted-foreground">Chegará entre terça e quinta-feira</p></div></div>
             <div className="mt-5 flex items-start gap-3"><MapPin className="mt-0.5 size-5 text-action" /><p className="text-sm">Enviar para <span className="font-semibold">São Paulo 01001-000</span></p></div>
             <p className="mt-6 font-semibold">Estoque disponível</p><p className="mt-1 text-sm text-muted-foreground">{product.stock} unidades disponíveis</p>
             <label className="mt-4 block text-sm">Quantidade: <select value={quantity} onChange={(event) => setQuantity(Number(event.target.value))} className="ml-2 rounded-md border border-input bg-card px-3 py-2">{Array.from({ length: Math.min(product.stock, 6) }, (_, index) => <option key={index + 1}>{index + 1}</option>)}</select></label>
