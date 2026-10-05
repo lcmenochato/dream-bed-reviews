@@ -16,7 +16,7 @@ export const Route = createFileRoute("/produto/$slug")({
       { title: loaderData ? `${loaderData.name} | Mercado Livre` : "Produto não encontrado | Mercado Livre" },
       { name: "description", content: loaderData?.description ?? "Produto não encontrado." },
       { property: "og:title", content: loaderData?.name ?? "Produto não encontrado" },
-      { property: "og:description", content: loaderData?.description ?? "Confira as ofertas do Mercado Móvel." },
+      { property: "og:description", content: loaderData?.description ?? "Confira as ofertas do Mercado Livre." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

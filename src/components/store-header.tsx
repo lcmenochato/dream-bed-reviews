@@ -9,7 +9,7 @@ export function StoreHeader({ query, onQueryChange }: { query?: string; onQueryC
       <div className="mx-auto max-w-6xl px-4 py-3">
         <div className="flex items-center gap-3">
           <Link to="/" className="flex shrink-0 items-center gap-2 text-primary-foreground" aria-label="Mercado Livre — início">
-            <img src={mercadoLivreLogo} alt="" className="h-9 w-[50px] object-contain" />
+            <img src={mercadoLivreLogo.url} alt="" className="h-9 w-[50px] object-contain" />
             <span className="hidden text-lg font-semibold leading-none lg:block">mercado<br />livre</span>
           </Link>
           <div className="relative flex-1">
