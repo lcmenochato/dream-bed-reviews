@@ -1,19 +1,19 @@
-# Localização, fotos e avaliações
+# Avaliações, ofertas adicionais e checkout Pix
 
 ## O que será alterado
-- Transformar o endereço do topo em um controle editável para o visitante informar cidade e CEP.
-- Reutilizar a localização informada tanto na vitrine quanto na página completa de cada produto.
-- Substituir imagens repetidas para que cada um dos 10 produtos tenha uma foto principal própria e coerente com seu nome.
-- Tornar as avaliações específicas para cada produto, com textos, datas, notas e situações de uso mais naturais.
-- Incluir fotos de compradores nas avaliações e um pequeno selo verificado ao lado do nome de cada perfil.
+- Garantir pessoas e fotos de perfil diferentes dentro das avaliações de cada produto.
+- Separar completamente as fotos enviadas nas avaliações das imagens usadas na galeria do produto.
+- Retirar a cômoda branca de 5 gavetas da vitrine e oferecê-la como uma oferta adicional relevante.
+- Adicionar ofertas complementares específicas nas páginas dos demais produtos, com escolha clara antes da compra.
+- Refazer o pagamento do checkout para aceitar somente Pix, com aparência e organização próximas ao fluxo do Mercado Livre.
+- Adicionar escolha entre frete grátis e entrega rápida em 2 dias por R$ 19,90, atualizando o resumo e o total.
 
 ## Experiência
-- Ao tocar em “Enviar para”, será aberta uma janela simples para preencher cidade e CEP.
-- A localização ficará salva no navegador para continuar aparecendo ao navegar entre produtos.
-- O detalhe do produto mostrará a mesma localização escolhida no topo e na área de entrega.
+- Cada página mostrará combinações coerentes, como cabeceira ou cômoda junto de camas e guarda-roupas.
+- A oferta escolhida seguirá para o checkout e aparecerá separadamente no resumo.
+- O checkout manterá as etapas de endereço, entrega, Pix, revisão e confirmação demonstrativa.
 
 ## Detalhes técnicos
-- A vitrine continuará sendo apenas demonstrativa, sem cadastro ou banco de dados.
-- Produtos e avaliações permanecerão centralizados no catálogo compartilhado.
-- Serão mantidos os preços, o selo de frete e o restante do visual atual.
-- A entrega será conferida em telas de celular e computador.
+- Catálogo, avaliações, ofertas, frete e checkout continuarão apenas demonstrativos e sem cobrança real.
+- A estrutura do pedido ficará centralizada em tipos e funções simples, pronta para futuramente enviar os dados à API do usuário.
+- A entrega será conferida no celular e no computador, incluindo cálculo de total e navegação completa.
