@@ -11,4 +11,4 @@
 
 - Keep the furniture storefront as a frontend-only demonstrator unless persistence is explicitly requested, because its catalog and reviews are illustrative.
 - Keep illustrative product data centralized in a shared catalog module so listing and detail routes stay consistent.
-- Keep checkout frontend-only and explicitly label confirmation as a demonstration, because no real payment or order persistence is configured.
+- Keep checkout frontend-only, Pix-only, and isolate its payload builder for future API integration; explicitly label confirmation as a demonstration because no real payment or order persistence is configured.

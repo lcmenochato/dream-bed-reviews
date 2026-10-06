@@ -24,6 +24,18 @@ import perfilPatricia from "@/assets/perfil-patricia.jpg";
 import perfilCarlos from "@/assets/perfil-carlos.jpg";
 import perfilRenata from "@/assets/perfil-renata.jpg";
 import perfilBruno from "@/assets/perfil-bruno.jpg";
+import perfilJuliana from "@/assets/perfil-juliana.jpg";
+import perfilThiago from "@/assets/perfil-thiago.jpg";
+import perfilAline from "@/assets/perfil-aline.jpg";
+import perfilCamila from "@/assets/perfil-camila.jpg";
+import perfilDiego from "@/assets/perfil-diego.jpg";
+import perfilFernanda from "@/assets/perfil-fernanda.jpg";
+import perfilLucas from "@/assets/perfil-lucas.jpg";
+import perfilVanessa from "@/assets/perfil-vanessa.jpg";
+import perfilMarcos from "@/assets/perfil-marcos.jpg";
+import perfilDebora from "@/assets/perfil-debora.jpg";
+import perfilGustavo from "@/assets/perfil-gustavo.jpg";
+import perfilSandra from "@/assets/perfil-sandra.jpg";
 
 export type Review = {
   author: string;
@@ -57,6 +69,7 @@ export type Product = {
   stock: number;
   description: string;
   features: Array<[string, string]>;
+  upsellSlugs: string[];
   reviews: Review[];
 };
 
@@ -66,11 +79,11 @@ type Kind = "sleep" | "furniture";
 
 const people: Array<[string, string, string]> = [
   ["Mariana Souza", perfilMariana, "São Paulo, SP"], ["Rafael Martins", perfilRafael, "Campinas, SP"], ["Patrícia Lima", perfilPatricia, "Belo Horizonte, MG"],
-  ["Carlos Ribeiro", perfilCarlos, "Curitiba, PR"], ["Renata Alves", perfilRenata, "Salvador, BA"], ["Juliana Costa", perfilMariana, "Recife, PE"],
-  ["Thiago Fernandes", perfilRafael, "Porto Alegre, RS"], ["Aline Pereira", perfilPatricia, "Goiânia, GO"], ["Bruno Oliveira", perfilBruno, "Fortaleza, CE"],
-  ["Camila Rocha", perfilRenata, "Rio de Janeiro, RJ"], ["Diego Santos", perfilCarlos, "Manaus, AM"], ["Fernanda Gomes", perfilMariana, "Florianópolis, SC"],
-  ["Lucas Almeida", perfilRafael, "Ribeirão Preto, SP"], ["Vanessa Duarte", perfilPatricia, "Natal, RN"], ["Marcos Vinícius", perfilBruno, "Belém, PA"],
-  ["Débora Nunes", perfilRenata, "Uberlândia, MG"], ["Gustavo Henrique", perfilCarlos, "Sorocaba, SP"], ["Sandra Melo", perfilMariana, "Vitória, ES"],
+  ["Carlos Ribeiro", perfilCarlos, "Curitiba, PR"], ["Renata Alves", perfilRenata, "Salvador, BA"], ["Juliana Costa", perfilJuliana, "Recife, PE"],
+  ["Thiago Fernandes", perfilThiago, "Porto Alegre, RS"], ["Aline Pereira", perfilAline, "Goiânia, GO"], ["Bruno Oliveira", perfilBruno, "Fortaleza, CE"],
+  ["Camila Rocha", perfilCamila, "Rio de Janeiro, RJ"], ["Diego Santos", perfilDiego, "Manaus, AM"], ["Fernanda Gomes", perfilFernanda, "Florianópolis, SC"],
+  ["Lucas Almeida", perfilLucas, "Ribeirão Preto, SP"], ["Vanessa Duarte", perfilVanessa, "Natal, RN"], ["Marcos Vinícius", perfilMarcos, "Belém, PA"],
+  ["Débora Nunes", perfilDebora, "Uberlândia, MG"], ["Gustavo Henrique", perfilGustavo, "Sorocaba, SP"], ["Sandra Melo", perfilSandra, "Vitória, ES"],
 ];
 
 const sleepTexts: Array<[number, string, string, boolean]> = [
@@ -111,9 +124,10 @@ function buildReviews(seed: number, kind: Kind, photos: string[]): Review[] {
   const texts = kind === "sleep" ? sleepTexts : furnitureTexts;
   const count = 7 + ((seed * 5) % 7);
   let photoIndex = seed;
+  const peopleOffset = (seed * 7) % people.length;
   return Array.from({ length: count }, (_, i) => {
     const reviewData = texts[(seed * 3 + i) % texts.length] ?? [5, "Excelente compra", "Produto entregue conforme o anúncio.", false];
-    const person = people[(seed * 7 + i * 5) % people.length] ?? ["Cliente", perfilMariana, "São Paulo, SP"];
+    const person = people[(peopleOffset + i) % people.length] ?? ["Cliente", perfilMariana, "São Paulo, SP"];
     const [rating, title, text, withPhoto] = reviewData;
     const [author, avatar, city] = person;
     const date = dates[i] ?? "há 1 mês";
@@ -124,15 +138,15 @@ function buildReviews(seed: number, kind: Kind, photos: string[]): Review[] {
 }
 
 const sleepPhotos = [fotoCamaReal, fotoPlastico, fotoQuarto, fotoTecido, fotoBoxCinza];
-const furniturePhotos = [fotoArmario, guardaRoupaBranco, fotoArmario];
+const furniturePhotos = [fotoArmario, fotoQuarto, fotoTecido];
 
-type Seed = Omit<Product, "oldPrice" | "price" | "installments" | "discount" | "reviews"> & { kind: Kind };
+type Seed = Omit<Product, "oldPrice" | "price" | "installments" | "discount" | "reviews" | "upsellSlugs"> & { kind: Kind } & Partial<Pick<Product, "upsellSlugs">>;
 
 const seeds: Seed[] = [
-  { kind: "sleep", slug: "cama-box-queen-confort-premium", name: "Cama Box Queen + Colchão Molas Ensacadas Confort Premium", category: "Colchões", image: colchaoQueen, gallery: [colchaoQueen, fotoCamaReal, fotoTecido], oldPriceValue: 749.9, priceValue: 229.9, rating: "4.8", reviewsCount: "1.243", sold: "+5 mil vendidos", stock: 8, description: "Conjunto queen com base bipartida e colchão de molas ensacadas que reduz a transferência de movimento. Tecido macio, tratamento antialérgico e conforto firme para uso diário.", features: [["Tamanho", "Queen 158 x 198 cm"], ["Altura total", "64 cm"], ["Suporte", "Até 120 kg por pessoa"], ["Garantia", "12 meses"]] },
-  { kind: "furniture", slug: "guarda-roupa-casal-freijo-6-portas", name: "Guarda-Roupa Casal 6 Portas 6 Gavetas Freijó e Branco", category: "Guarda-roupas", image: guardaRoupa, gallery: [guardaRoupa, fotoArmario], oldPriceValue: 699.9, priceValue: 219.9, rating: "4.7", reviewsCount: "856", sold: "+1 mil vendidos", stock: 5, description: "Guarda-roupa de casal com amplo espaço interno, cabideiros em alumínio, seis gavetas e nichos para organizar roupas e acessórios.", features: [["Largura", "240 cm"], ["Altura", "230 cm"], ["Profundidade", "47 cm"], ["Material", "MDF e MDP"]] },
-  { kind: "sleep", slug: "cama-box-solteiro-d33-cinza", name: "Cama Box Solteiro com Colchão Espuma D33 Cinza", category: "Camas box", image: camaSolteiro, gallery: [camaSolteiro, fotoBoxCinza], oldPriceValue: 549.9, priceValue: 179.9, rating: "4.9", reviewsCount: "538", sold: "+2 mil vendidos", stock: 12, description: "Cama box solteiro com colchão de espuma D33, indicada para quem prefere sustentação firme. Base reforçada e revestimento cinza fácil de combinar.", features: [["Tamanho", "88 x 188 cm"], ["Altura total", "56 cm"], ["Suporte", "Até 110 kg"], ["Densidade", "D33"]] },
-  { kind: "sleep", slug: "colchao-casal-espuma-d33", name: "Colchão Casal Espuma D33 Ortopédico 138 x 188 cm", category: "Colchões", image: colchaoCasal, gallery: [colchaoCasal, fotoPlastico], oldPriceValue: 589.9, priceValue: 169.9, rating: "4.7", reviewsCount: "2.104", sold: "+10 mil vendidos", stock: 19, description: "Colchão de casal firme com espuma certificada D33 e revestimento respirável. Uma opção econômica para uso diário, com tratamento antiácaro e antialérgico.", features: [["Tamanho", "Casal 138 x 188 cm"], ["Altura", "18 cm"], ["Suporte", "Até 100 kg por pessoa"], ["Conforto", "Firme"]] },
+  { kind: "sleep", slug: "cama-box-queen-confort-premium", name: "Cama Box Queen + Colchão Molas Ensacadas Confort Premium", category: "Colchões", image: colchaoQueen, gallery: [colchaoQueen], oldPriceValue: 749.9, priceValue: 229.9, rating: "4.8", reviewsCount: "1.243", sold: "+5 mil vendidos", stock: 8, description: "Conjunto queen com base bipartida e colchão de molas ensacadas que reduz a transferência de movimento. Tecido macio, tratamento antialérgico e conforto firme para uso diário.", features: [["Tamanho", "Queen 158 x 198 cm"], ["Altura total", "64 cm"], ["Suporte", "Até 120 kg por pessoa"], ["Garantia", "12 meses"]], upsellSlugs: ["cabeceira-casal-linho-bege", "comoda-5-gavetas-branca"] },
+  { kind: "furniture", slug: "guarda-roupa-casal-freijo-6-portas", name: "Guarda-Roupa Casal 6 Portas 6 Gavetas Freijó e Branco", category: "Guarda-roupas", image: guardaRoupa, gallery: [guardaRoupa], oldPriceValue: 699.9, priceValue: 219.9, rating: "4.7", reviewsCount: "856", sold: "+1 mil vendidos", stock: 5, description: "Guarda-roupa de casal com amplo espaço interno, cabideiros em alumínio, seis gavetas e nichos para organizar roupas e acessórios.", features: [["Largura", "240 cm"], ["Altura", "230 cm"], ["Profundidade", "47 cm"], ["Material", "MDF e MDP"]], upsellSlugs: ["comoda-5-gavetas-branca"] },
+  { kind: "sleep", slug: "cama-box-solteiro-d33-cinza", name: "Cama Box Solteiro com Colchão Espuma D33 Cinza", category: "Camas box", image: camaSolteiro, gallery: [camaSolteiro], oldPriceValue: 549.9, priceValue: 179.9, rating: "4.9", reviewsCount: "538", sold: "+2 mil vendidos", stock: 12, description: "Cama box solteiro com colchão de espuma D33, indicada para quem prefere sustentação firme. Base reforçada e revestimento cinza fácil de combinar.", features: [["Tamanho", "88 x 188 cm"], ["Altura total", "56 cm"], ["Suporte", "Até 110 kg"], ["Densidade", "D33"]], upsellSlugs: ["comoda-5-gavetas-branca"] },
+  { kind: "sleep", slug: "colchao-casal-espuma-d33", name: "Colchão Casal Espuma D33 Ortopédico 138 x 188 cm", category: "Colchões", image: colchaoCasal, gallery: [colchaoCasal], oldPriceValue: 589.9, priceValue: 169.9, rating: "4.7", reviewsCount: "2.104", sold: "+10 mil vendidos", stock: 19, description: "Colchão de casal firme com espuma certificada D33 e revestimento respirável. Uma opção econômica para uso diário, com tratamento antiácaro e antialérgico.", features: [["Tamanho", "Casal 138 x 188 cm"], ["Altura", "18 cm"], ["Suporte", "Até 100 kg por pessoa"], ["Conforto", "Firme"]], upsellSlugs: ["cabeceira-casal-linho-bege"] },
   { kind: "furniture", slug: "guarda-roupa-solteiro-branco-4-portas", name: "Guarda-Roupa Solteiro 4 Portas 2 Gavetas Branco", category: "Guarda-roupas", image: guardaRoupaBranco, gallery: [guardaRoupaBranco, fotoArmario], oldPriceValue: 499.9, priceValue: 149.9, rating: "4.6", reviewsCount: "692", sold: "+1 mil vendidos", stock: 7, description: "Modelo compacto para quartos menores, com quatro portas, duas gavetas e divisão interna prática. Acabamento branco fosco e puxadores resistentes.", features: [["Largura", "160 cm"], ["Altura", "200 cm"], ["Profundidade", "46 cm"], ["Material", "MDP"]] },
   { kind: "sleep", slug: "cama-box-bau-casal-cinza", name: "Cama Box Baú Casal Cinza + Colchão de Molas", category: "Camas box", image: camaBoxBau, gallery: [camaBoxBau, fotoBoxCinza, fotoQuarto], oldPriceValue: 769.9, priceValue: 229.9, rating: "4.8", reviewsCount: "967", sold: "+5 mil vendidos", stock: 6, description: "Conjunto casal com baú de grande capacidade e abertura assistida por pistões. Colchão de molas com conforto intermediário e revestimento cinza resistente.", features: [["Tamanho", "Casal 138 x 188 cm"], ["Baú", "Profundidade de 27 cm"], ["Suporte", "Até 110 kg por pessoa"], ["Abertura", "Pistões a gás"]] },
   { kind: "sleep", slug: "colchao-solteiro-d20-conforto", name: "Colchão Solteiro Espuma D20 Conforto 78 x 188 cm", category: "Colchões", image: colchaoSolteiro, gallery: [colchaoSolteiro, fotoPlastico], oldPriceValue: 459.9, priceValue: 149.9, rating: "4.6", reviewsCount: "418", sold: "+1 mil vendidos", stock: 24, description: "Colchão solteiro leve e confortável, feito com espuma D20 certificada e tecido respirável. Ideal para crianças, adolescentes e quartos de hóspedes.", features: [["Tamanho", "Solteiro 78 x 188 cm"], ["Altura", "14 cm"], ["Suporte", "Até 70 kg"], ["Conforto", "Macio"]] },
@@ -145,13 +159,32 @@ const seeds: Seed[] = [
   { kind: "sleep", slug: "cama-box-casal-courino-marrom", name: "Cama Box Casal Courino Marrom + Colchão Espuma D33", category: "Camas box", image: camaMarrom, gallery: [camaMarrom, fotoQuarto, fotoTecido], oldPriceValue: 689.9, priceValue: 199.9, rating: "4.8", reviewsCount: "774", sold: "+2 mil vendidos", stock: 10, description: "Conjunto casal com base em courino marrom fácil de limpar, cabeceira integrada e colchão de espuma D33 firme.", features: [["Tamanho", "Casal 138 x 188 cm"], ["Altura total", "60 cm"], ["Suporte", "Até 100 kg por pessoa"], ["Revestimento", "Courino"]] },
 ];
 
-export const products: Product[] = seeds.map(({ kind, ...seed }, index) => ({
-  ...seed,
-  oldPrice: formatBRL(seed.oldPriceValue),
-  price: formatBRL(seed.priceValue),
-  installments: `10x ${formatBRL(seed.priceValue / 10)} sem juros`,
-  discount: `${Math.round((1 - seed.priceValue / seed.oldPriceValue) * 100)}% OFF`,
-  reviews: buildReviews(index + 1, kind, kind === "sleep" ? sleepPhotos : furniturePhotos),
-}));
+const allProducts: Product[] = seeds.map(({ kind, upsellSlugs, ...seed }, index) => {
+  const suggestedSlugs = upsellSlugs ?? (
+    seed.slug === "comoda-5-gavetas-branca" ? []
+      : seed.slug === "cabeceira-casal-linho-bege" ? ["comoda-5-gavetas-branca"]
+        : seed.slug === "base-box-solteiro-preta" ? ["colchao-solteiro-d20-conforto"]
+          : kind === "furniture" ? ["comoda-5-gavetas-branca"]
+            : seed.slug.includes("solteiro") ? ["base-box-solteiro-preta"]
+              : ["cabeceira-casal-linho-bege", "comoda-5-gavetas-branca"]
+  );
 
-export const getProduct = (slug: string) => products.find((product) => product.slug === slug);
+  return {
+    ...seed,
+    gallery: [seed.image],
+    upsellSlugs: suggestedSlugs,
+    oldPrice: formatBRL(seed.oldPriceValue),
+    price: formatBRL(seed.priceValue),
+    installments: `10x ${formatBRL(seed.priceValue / 10)} sem juros`,
+    discount: `${Math.round((1 - seed.priceValue / seed.oldPriceValue) * 100)}% OFF`,
+    reviews: buildReviews(index + 1, kind, kind === "sleep" ? sleepPhotos : furniturePhotos),
+  };
+});
+
+export const products = allProducts.filter((product) => product.slug !== "comoda-5-gavetas-branca");
+
+export const getProduct = (slug: string) => allProducts.find((product) => product.slug === slug);
+
+export const getUpsells = (product: Product) => product.upsellSlugs
+  .map((slug) => allProducts.find((item) => item.slug === slug))
+  .filter((item): item is Product => Boolean(item));
