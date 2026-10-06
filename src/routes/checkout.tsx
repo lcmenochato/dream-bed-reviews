@@ -33,7 +33,7 @@ function Checkout() {
   const quantity = search.quantidade ?? 1;
   const navigate = useNavigate();
   const [location, saveLocation] = useDeliveryLocation();
-  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(location.city && location.cep ? 2 : 1);
+  const [step, setStep] = useState<1 | 2 | 3 | 4 | 5>(1);
   const [city, setCity] = useState(location.city);
   const [cep, setCep] = useState(location.cep);
   const [street, setStreet] = useState("");

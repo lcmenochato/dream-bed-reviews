@@ -140,7 +140,7 @@ function buildReviews(seed: number, kind: Kind, photos: string[]): Review[] {
 const sleepPhotos = [fotoCamaReal, fotoPlastico, fotoQuarto, fotoTecido, fotoBoxCinza];
 const furniturePhotos = [fotoArmario, fotoQuarto, fotoTecido];
 
-type Seed = Omit<Product, "oldPrice" | "price" | "installments" | "discount" | "reviews" | "upsellSlugs"> & { kind: Kind; upsellSlugs?: string[] };
+type Seed = Omit<Product, "oldPrice" | "price" | "installments" | "discount" | "reviews" | "upsellSlugs"> & { kind: Kind } & Partial<Pick<Product, "upsellSlugs">>;
 
 const seeds: Seed[] = [
   { kind: "sleep", slug: "cama-box-queen-confort-premium", name: "Cama Box Queen + Colchão Molas Ensacadas Confort Premium", category: "Colchões", image: colchaoQueen, gallery: [colchaoQueen], oldPriceValue: 749.9, priceValue: 229.9, rating: "4.8", reviewsCount: "1.243", sold: "+5 mil vendidos", stock: 8, description: "Conjunto queen com base bipartida e colchão de molas ensacadas que reduz a transferência de movimento. Tecido macio, tratamento antialérgico e conforto firme para uso diário.", features: [["Tamanho", "Queen 158 x 198 cm"], ["Altura total", "64 cm"], ["Suporte", "Até 120 kg por pessoa"], ["Garantia", "12 meses"]], upsellSlugs: ["cabeceira-casal-linho-bege", "comoda-5-gavetas-branca"] },
@@ -159,16 +159,27 @@ const seeds: Seed[] = [
   { kind: "sleep", slug: "cama-box-casal-courino-marrom", name: "Cama Box Casal Courino Marrom + Colchão Espuma D33", category: "Camas box", image: camaMarrom, gallery: [camaMarrom, fotoQuarto, fotoTecido], oldPriceValue: 689.9, priceValue: 199.9, rating: "4.8", reviewsCount: "774", sold: "+2 mil vendidos", stock: 10, description: "Conjunto casal com base em courino marrom fácil de limpar, cabeceira integrada e colchão de espuma D33 firme.", features: [["Tamanho", "Casal 138 x 188 cm"], ["Altura total", "60 cm"], ["Suporte", "Até 100 kg por pessoa"], ["Revestimento", "Courino"]] },
 ];
 
-const allProducts: Product[] = seeds.map(({ kind, upsellSlugs = [], ...seed }, index) => ({
-  ...seed,
-  gallery: [seed.image],
-  upsellSlugs,
-  oldPrice: formatBRL(seed.oldPriceValue),
-  price: formatBRL(seed.priceValue),
-  installments: `10x ${formatBRL(seed.priceValue / 10)} sem juros`,
-  discount: `${Math.round((1 - seed.priceValue / seed.oldPriceValue) * 100)}% OFF`,
-  reviews: buildReviews(index + 1, kind, kind === "sleep" ? sleepPhotos : furniturePhotos),
-}));
+const allProducts: Product[] = seeds.map(({ kind, upsellSlugs, ...seed }, index) => {
+  const suggestedSlugs = upsellSlugs ?? (
+    seed.slug === "comoda-5-gavetas-branca" ? []
+      : seed.slug === "cabeceira-casal-linho-bege" ? ["comoda-5-gavetas-branca"]
+        : seed.slug === "base-box-solteiro-preta" ? ["colchao-solteiro-d20-conforto"]
+          : kind === "furniture" ? ["comoda-5-gavetas-branca"]
+            : seed.slug.includes("solteiro") ? ["base-box-solteiro-preta"]
+              : ["cabeceira-casal-linho-bege", "comoda-5-gavetas-branca"]
+  );
+
+  return {
+    ...seed,
+    gallery: [seed.image],
+    upsellSlugs: suggestedSlugs,
+    oldPrice: formatBRL(seed.oldPriceValue),
+    price: formatBRL(seed.priceValue),
+    installments: `10x ${formatBRL(seed.priceValue / 10)} sem juros`,
+    discount: `${Math.round((1 - seed.priceValue / seed.oldPriceValue) * 100)}% OFF`,
+    reviews: buildReviews(index + 1, kind, kind === "sleep" ? sleepPhotos : furniturePhotos),
+  };
+});
 
 export const products = allProducts.filter((product) => product.slug !== "comoda-5-gavetas-branca");
 
