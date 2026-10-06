@@ -2,8 +2,11 @@ import { Link } from "@tanstack/react-router";
 import { ChevronDown, MapPin, Search, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import mercadoLivreLogo from "@/assets/mercado-livre-logo.png.asset.json";
+import { LocationDialog } from "@/components/location-dialog";
+import { locationLabel, useDeliveryLocation } from "@/lib/location";
 
 export function StoreHeader({ query, onQueryChange }: { query?: string; onQueryChange?: (value: string) => void }) {
+  const [location] = useDeliveryLocation();
   return (
     <header className="sticky top-0 z-30 bg-primary shadow-header">
       <div className="mx-auto max-w-6xl px-4 py-3">
@@ -18,11 +21,13 @@ export function StoreHeader({ query, onQueryChange }: { query?: string; onQueryC
           </div>
           <Button variant="icon" size="icon" aria-label="Abrir carrinho"><ShoppingCart className="size-5" /></Button>
         </div>
-        <Button variant="ghost" size="sm" className="mt-2 min-w-0 px-1 text-primary-foreground" aria-label="Alterar endereço de entrega">
-          <MapPin className="size-5 shrink-0" />
-          <span className="min-w-0 truncate text-left"><span className="block text-xs opacity-70">Enviar para</span>São Paulo 01001-000</span>
-          <ChevronDown className="size-4" />
-        </Button>
+        <LocationDialog>{(open) => (
+          <Button variant="ghost" size="sm" onClick={open} className="mt-2 min-w-0 px-1 text-primary-foreground" aria-label="Alterar endereço de entrega">
+            <MapPin className="size-5 shrink-0" />
+            <span className="min-w-0 truncate text-left"><span className="block text-xs opacity-70">Enviar para</span>{locationLabel(location)}</span>
+            <ChevronDown className="size-4" />
+          </Button>
+        )}</LocationDialog>
       </div>
     </header>
   );
