@@ -18,6 +18,12 @@ import fotoPlastico from "@/assets/avaliacao-colchao-plastico.jpg";
 import fotoQuarto from "@/assets/avaliacao-quarto-pronto.jpg";
 import fotoTecido from "@/assets/avaliacao-detalhe-tecido.jpg";
 import fotoArmario from "@/assets/avaliacao-guarda-roupa-montado.jpg";
+import perfilMariana from "@/assets/perfil-mariana.jpg";
+import perfilRafael from "@/assets/perfil-rafael.jpg";
+import perfilPatricia from "@/assets/perfil-patricia.jpg";
+import perfilCarlos from "@/assets/perfil-carlos.jpg";
+import perfilRenata from "@/assets/perfil-renata.jpg";
+import perfilBruno from "@/assets/perfil-bruno.jpg";
 
 export type Review = {
   author: string;
@@ -58,13 +64,13 @@ export const formatBRL = (value: number) => value.toLocaleString("pt-BR", { styl
 
 type Kind = "sleep" | "furniture";
 
-const people = [
-  ["Mariana Souza", "women/44", "São Paulo, SP"], ["Rafael Martins", "men/32", "Campinas, SP"], ["Patrícia Lima", "women/65", "Belo Horizonte, MG"],
-  ["Carlos Ribeiro", "men/52", "Curitiba, PR"], ["Renata Alves", "women/29", "Salvador, BA"], ["Juliana Costa", "women/12", "Recife, PE"],
-  ["Thiago Fernandes", "men/18", "Porto Alegre, RS"], ["Aline Pereira", "women/57", "Goiânia, GO"], ["Bruno Oliveira", "men/75", "Fortaleza, CE"],
-  ["Camila Rocha", "women/33", "Rio de Janeiro, RJ"], ["Diego Santos", "men/41", "Manaus, AM"], ["Fernanda Gomes", "women/21", "Florianópolis, SC"],
-  ["Lucas Almeida", "men/9", "Ribeirão Preto, SP"], ["Vanessa Duarte", "women/80", "Natal, RN"], ["Marcos Vinícius", "men/61", "Belém, PA"],
-  ["Débora Nunes", "women/3", "Uberlândia, MG"], ["Gustavo Henrique", "men/27", "Sorocaba, SP"], ["Sandra Melo", "women/90", "Vitória, ES"],
+const people: Array<[string, string, string]> = [
+  ["Mariana Souza", perfilMariana, "São Paulo, SP"], ["Rafael Martins", perfilRafael, "Campinas, SP"], ["Patrícia Lima", perfilPatricia, "Belo Horizonte, MG"],
+  ["Carlos Ribeiro", perfilCarlos, "Curitiba, PR"], ["Renata Alves", perfilRenata, "Salvador, BA"], ["Juliana Costa", perfilMariana, "Recife, PE"],
+  ["Thiago Fernandes", perfilRafael, "Porto Alegre, RS"], ["Aline Pereira", perfilPatricia, "Goiânia, GO"], ["Bruno Oliveira", perfilBruno, "Fortaleza, CE"],
+  ["Camila Rocha", perfilRenata, "Rio de Janeiro, RJ"], ["Diego Santos", perfilCarlos, "Manaus, AM"], ["Fernanda Gomes", perfilMariana, "Florianópolis, SC"],
+  ["Lucas Almeida", perfilRafael, "Ribeirão Preto, SP"], ["Vanessa Duarte", perfilPatricia, "Natal, RN"], ["Marcos Vinícius", perfilBruno, "Belém, PA"],
+  ["Débora Nunes", perfilRenata, "Uberlândia, MG"], ["Gustavo Henrique", perfilCarlos, "Sorocaba, SP"], ["Sandra Melo", perfilMariana, "Vitória, ES"],
 ];
 
 const sleepTexts: Array<[number, string, string, boolean]> = [
@@ -99,17 +105,21 @@ const furnitureTexts: Array<[number, string, string, boolean]> = [
   [5, "Superou o que eu esperava", "As fotos não fazem jus, pessoalmente é ainda mais bonito. Vendedor respondeu rápido as dúvidas.", false],
 ];
 
-const dates = ["há 2 dias", "há 5 dias", "há 1 semana", "há 10 dias", "há 2 semanas", "há 3 semanas", "há 1 mês", "há 1 mês", "há 2 meses", "há 2 meses", "há 3 meses", "há 4 meses", "há 5 meses"];
+const dates: string[] = ["há 2 dias", "há 5 dias", "há 1 semana", "há 10 dias", "há 2 semanas", "há 3 semanas", "há 1 mês", "há 1 mês", "há 2 meses", "há 2 meses", "há 3 meses", "há 4 meses", "há 5 meses"];
 
 function buildReviews(seed: number, kind: Kind, photos: string[]): Review[] {
   const texts = kind === "sleep" ? sleepTexts : furnitureTexts;
   const count = 7 + ((seed * 5) % 7);
   let photoIndex = seed;
   return Array.from({ length: count }, (_, i) => {
-    const [rating, title, text, withPhoto] = texts[(seed * 3 + i) % texts.length];
-    const [author, avatar, city] = people[(seed * 7 + i * 5) % people.length];
+    const reviewData = texts[(seed * 3 + i) % texts.length] ?? [5, "Excelente compra", "Produto entregue conforme o anúncio.", false];
+    const person = people[(seed * 7 + i * 5) % people.length] ?? ["Cliente", perfilMariana, "São Paulo, SP"];
+    const [rating, title, text, withPhoto] = reviewData;
+    const [author, avatar, city] = person;
+    const date = dates[i] ?? "há 1 mês";
+    const review = { author, avatar, city, date, rating, title, text, likes: (seed * 13 + i * 7) % 40 };
     const image = withPhoto ? photos[photoIndex++ % photos.length] : undefined;
-    return { author, avatar: `https://randomuser.me/api/portraits/${avatar}.jpg`, city, date: dates[i], rating, title, text, image, likes: (seed * 13 + i * 7) % 40 };
+    return image ? { ...review, image } : review;
   });
 }
 
