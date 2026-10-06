@@ -24,6 +24,7 @@ const categories = [
   { label: "Colchões", emoji: "☁️" },
   { label: "Camas box", emoji: "🛏️" },
   { label: "Guarda-roupas", emoji: "🚪" },
+  { label: "Cômodas e cabeceiras", emoji: "🗄️" },
 ];
 
 function Index() {
