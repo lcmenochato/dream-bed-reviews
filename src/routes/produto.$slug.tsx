@@ -4,7 +4,7 @@ import { ArrowLeft, BadgeCheck, ChevronRight, Heart, MapPin, ShieldCheck, Star, 
 import { Button } from "@/components/ui/button";
 import { LocationDialog } from "@/components/location-dialog";
 import { StoreHeader } from "@/components/store-header";
-import { getProduct } from "@/lib/catalog";
+import { formatBRL, getProduct, getUpsells } from "@/lib/catalog";
 import { locationLabel, useDeliveryLocation } from "@/lib/location";
 
 export const Route = createFileRoute("/produto/$slug")({
@@ -32,7 +32,9 @@ function ProductDetail() {
   const [activeImage, setActiveImage] = useState(0);
   const [favorite, setFavorite] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [selectedUpsell, setSelectedUpsell] = useState("");
   const [location] = useDeliveryLocation();
+  const upsells = getUpsells(product);
 
   return (
     <main className="min-h-screen bg-background pb-16">
@@ -63,7 +65,8 @@ function ProductDetail() {
             <LocationDialog>{(open) => <button onClick={open} className="mt-5 flex items-start gap-3 text-left"><MapPin className="mt-0.5 size-5 text-action" /><p className="text-sm">Enviar para <span className="font-semibold text-action">{locationLabel(location)}</span></p></button>}</LocationDialog>
             <p className="mt-6 font-semibold">Estoque disponível</p><p className="mt-1 text-sm text-muted-foreground">{product.stock} unidades disponíveis</p>
             <label className="mt-4 block text-sm">Quantidade: <select value={quantity} onChange={(event) => setQuantity(Number(event.target.value))} className="ml-2 rounded-md border border-input bg-card px-3 py-2">{Array.from({ length: Math.min(product.stock, 6) }, (_, index) => <option key={index + 1}>{index + 1}</option>)}</select></label>
-            <div className="mt-6 grid gap-3"><Button asChild className="h-12 w-full"><Link to="/checkout" search={{ produto: product.slug, quantidade: quantity }}>Comprar agora</Link></Button><Button variant="secondary" className="h-12 w-full text-action">Adicionar ao carrinho</Button></div>
+            {upsells.length > 0 && <div className="mt-6 border-y border-border py-5"><p className="font-semibold">Aproveite e leve junto</p><p className="mt-1 text-xs text-muted-foreground">Oferta opcional adicionada ao seu pedido</p><div className="mt-4 space-y-3">{upsells.map((upsell) => <label key={upsell.slug} className={`flex cursor-pointer items-center gap-3 rounded-md border p-3 ${selectedUpsell === upsell.slug ? "border-action bg-secondary" : "border-border"}`}><input type="checkbox" checked={selectedUpsell === upsell.slug} onChange={() => setSelectedUpsell((current) => current === upsell.slug ? "" : upsell.slug)} className="size-4 accent-action" /><img src={upsell.image} alt="" loading="lazy" width={120} height={120} className="size-16 rounded-md object-cover" /><span className="min-w-0 flex-1"><span className="line-clamp-2 text-sm font-medium">{upsell.name}</span><span className="mt-1 block text-sm font-semibold text-success">+ {formatBRL(upsell.priceValue)}</span></span></label>)}</div></div>}
+            <div className="mt-6 grid gap-3"><Button asChild className="h-12 w-full"><Link to="/checkout" search={{ produto: product.slug, quantidade: quantity, adicional: selectedUpsell }}>Comprar agora</Link></Button><Button variant="secondary" className="h-12 w-full text-action">Adicionar ao carrinho</Button></div>
             <div className="mt-5 flex items-start gap-2 text-sm text-muted-foreground"><ShieldCheck className="size-5 shrink-0 text-action" /><p><span className="text-action">Compra Garantida.</span> Receba o produto que está esperando ou devolvemos o dinheiro.</p></div>
           </div>
         </section>
