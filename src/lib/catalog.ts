@@ -112,8 +112,10 @@ function buildReviews(seed: number, kind: Kind, photos: string[]): Review[] {
   const count = 7 + ((seed * 5) % 7);
   let photoIndex = seed;
   return Array.from({ length: count }, (_, i) => {
-    const [rating, title, text, withPhoto] = texts[(seed * 3 + i) % texts.length];
-    const [author, avatar, city] = people[(seed * 7 + i * 5) % people.length];
+    const reviewData = texts[(seed * 3 + i) % texts.length] ?? [5, "Excelente compra", "Produto entregue conforme o anúncio.", false];
+    const person = people[(seed * 7 + i * 5) % people.length] ?? ["Cliente", perfilMariana, "São Paulo, SP"];
+    const [rating, title, text, withPhoto] = reviewData;
+    const [author, avatar, city] = person;
     const date = dates[i] ?? "há 1 mês";
     const review = { author, avatar, city, date, rating, title, text, likes: (seed * 13 + i * 7) % 40 };
     const image = withPhoto ? photos[photoIndex++ % photos.length] : undefined;
