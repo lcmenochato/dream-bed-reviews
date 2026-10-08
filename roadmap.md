@@ -1,0 +1,4 @@
+- [ ] Correct review photo assignment by product type without repeated photos within a product.
+- [ ] Keep headboard exclusively as a bed upsell.
+- [ ] Add shoe cabinet, single storage bed, floating bedside table, vanity and desk.
+- [ ] Provide three dedicated gallery photos for every product and verify galleries, listing and checkout.
